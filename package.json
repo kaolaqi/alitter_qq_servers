@@ -1,0 +1,34 @@
+{
+  "name": "alitter_qq_servers",
+  "version": "1.0.0",
+  "description": "alitterQQ servers",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon -e js,jsx --watch src  src/index.js --mode"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kaolaqi/alitter_qq_servers.git"
+  },
+  "author": "limaoquan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kaolaqi/alitter_qq_servers/issues"
+  },
+  "homepage": "https://github.com/kaolaqi/alitter_qq_servers#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mysql2": "^2.0.2",
+    "nodejs-websocket": "^1.7.2",
+    "sequelize": "^5.21.2",
+    "utility": "^1.16.3"
+  },
+  "devDependencies": {
+    "chalk": "^3.0.0",
+    "nodemon": "^2.0.2"
+  }
+}
