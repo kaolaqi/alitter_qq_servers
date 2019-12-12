@@ -1,5 +1,6 @@
 const utility = require('utility')
-const backstageUserAdmin = require('../tables/admin_user')
+const adminUser = require('../tables/admin_user')
+const adminRole = require('../tables/admin_role')
 
 // 后台管理用户注册 phone password email必填，nickname选填，其他字段忽略无效
 const admin_register = ({
@@ -9,7 +10,7 @@ const admin_register = ({
   email,
 }) => {
   password = utility.sha256(password)
-  return backstageUserAdmin.create({
+  return adminUser.create({
     phone,
     nickname,
     password,
@@ -42,24 +43,29 @@ const admin_login = ({
   phone,
   password
 }) => {
-  return backstageUserAdmin.findOne({
+  return adminUser.findOne({
     where: {
       phone
-    }
+    },
+    include: [{
+      attributes: ['roleType', 'roleName'],
+      model: adminRole,
+      as: 'roleInfo'
+    }]
   }).then(userInfo => {
     if (userInfo) {
       password = utility.sha256(password)
       if (userInfo.password === password) {
         return {
           statusCode: 200,
-          message: userInfo.nickname || userInfo.phone + '账号登录成功！',
+          message: (userInfo.nickname || userInfo.phone) + '登录成功！',
           data: {
             avatar: userInfo.avatar,
             email: userInfo.email,
-            role: userInfo.role,
             status: userInfo.status,
             phone: userInfo.phone,
-            nickname: userInfo.nickname
+            nickname: userInfo.nickname,
+            roleInfo: userInfo.roleInfo
           }
         }
       } else {
@@ -87,25 +93,29 @@ const admin_login = ({
 
 // 获取后台管理用户信息
 const admin_info = ({
-  username
+  phone
 }) => {
-  return backstageUserAdmin.findOne({
+  return adminUser.findOne({
     where: {
-      username: username
-    }
-  }).then(data => {
-    if (data) {
+      phone
+    },
+    include: [{
+      attributes: ['roleType', 'roleName'],
+      model: adminRole,
+      as: 'roleInfo'
+    }]
+  }).then(userInfo => {
+    if (userInfo) {
       return {
         statusCode: 200,
         message: 'success',
         data: {
-          avatar: data.avatar,
-          email: data.email,
-          id: data.id,
-          key: data.key,
-          role: data.role,
-          status: data.status,
-          username: data.username
+          avatar: userInfo.avatar,
+          email: userInfo.email,
+          status: userInfo.status,
+          phone: userInfo.phone,
+          nickname: userInfo.nickname,
+          roleInfo: userInfo.roleInfo
         }
       }
     } else {
@@ -129,7 +139,7 @@ const admin_toogleUserStatus = ({
   id,
   status
 }) => {
-  return backstageUserAdmin.update({
+  return adminUser.update({
     status
   }, {
     where: {
@@ -170,7 +180,7 @@ const admin_userList = ({
   if (role) {
     query.role = role
   }
-  return backstageUserAdmin.findAndCountAll({
+  return adminUser.findAndCountAll({
     offset: (page - 1) * pageSize,
     limit: +pageSize,
     attributes: ['id', 'username', 'email', 'avatar', 'status', 'role', 'createdAt'],

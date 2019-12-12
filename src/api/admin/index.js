@@ -8,7 +8,7 @@ var userModel = require('./user.js')
 // 管理系统接口模块
 router.post('/register', systemModel.userRegister)
 router.post('/login', systemModel.userLogin)
-router.get('/userInfo', auth, systemModel.userInfo)
+router.get('/getUserInfo', auth, systemModel.userInfo)
 router.get('/logout', auth, systemModel.userLogout)
 router.get('/userList', auth, systemModel.adminUserList)
 router.put('/toogleUserStatus', auth, systemModel.toogleUserStatus)

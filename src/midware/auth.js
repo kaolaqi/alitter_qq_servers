@@ -13,7 +13,7 @@ module.exports = (req, res, next) => {
     } else {
       res.json({
         statusCode: 401,
-        message: 'token is unlawful',
+        message: '登录失效，请重新登录！',
         result: null
       })
     }
