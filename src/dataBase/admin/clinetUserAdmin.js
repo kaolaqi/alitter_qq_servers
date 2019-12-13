@@ -6,11 +6,11 @@ const Op = Sequelize.Op
 const admin_clientUserList = ({
   page = 1,
   pageSize = 10,
-  mobile = '',
-  nickname = '',
-  status = '',
-  startTimestamp = '',
-  endTimestamp = ''
+  mobile,
+  nickname,
+  status,
+  startTimestamp,
+  endTimestamp
 }) => {
   var query = {}
   if (mobile) {
@@ -31,7 +31,7 @@ const admin_clientUserList = ({
   return clientUserAdmin.findAndCountAll({
     offset: (page - 1) * pageSize,
     limit: +pageSize,
-    attributes: ['userId', 'nickname', 'mobile', 'avatar', 'status', 'createdAt', 'updatedAt'],
+    attributes: ['userId', 'nickname', 'mobile', 'avatar', 'email', 'sign', 'status'],
     where: query
   }).then(data => {
     if (data) {
@@ -75,7 +75,7 @@ const admin_deleteClientUser = ({
   })
 }
 
-// 切换指定用户状态
+// 冻结|解冻用户
 const admin_toogleClientUserStatus = ({
   userId,
   status
@@ -87,11 +87,17 @@ const admin_toogleClientUserStatus = ({
       userId: +userId
     }
   }).then(data => {
-    if (data) {
+    if (data[0]) {
       return {
         statusCode: 200,
         message: 'success',
-        data: data
+        data: null
+      }
+    } else if (data[0] === 0) {
+      return {
+        statusCode: 201,
+        message: '没有找到要修改到用户',
+        data: null
       }
     }
   }).catch(e => {

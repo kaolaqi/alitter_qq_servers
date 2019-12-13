@@ -6,17 +6,16 @@ const AdminRole = require('./admin_role.js')
 
 // 初始化数据库的user表
 const adminUser = sequelize.define('admin_user', {
-  // userId: {
-  //   type: Sequelize.DataTypes.UUID,
-  //   defaultValue: Sequelize.DataTypes.UUIDV4,
-  //   primaryKey: true,
-  //   comment: '后台账号用户ID'
-  // },
+  userId: {
+    type: Sequelize.BIGINT,
+    primaryKey: true,
+    autoIncrement: true,
+    comment: '后台账号用户ID'
+  },
   phone: {
     type: Sequelize.STRING,
     allowNull: false,
     comment: '后台账号手机号',
-    // primaryKey: true
     unique: true
   },
   nickname: {
@@ -34,9 +33,10 @@ const adminUser = sequelize.define('admin_user', {
     comment: '后台账号邮箱，将来用于修改密码',
     unique: true
   },
-  
+
   avatar: {
     type: Sequelize.STRING,
+    defaultValue: '',
     comment: '后台账号图像URL地址'
   },
   role: {
@@ -55,7 +55,8 @@ const adminUser = sequelize.define('admin_user', {
 
 adminUser.belongsTo(AdminRole, {
   as: 'roleInfo',
-  foreignKey: 'role'
+  foreignKey: 'role',
+  targetKey: 'roleType'
 })
 
 adminUser.sync({

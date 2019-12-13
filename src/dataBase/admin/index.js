@@ -1,7 +1,7 @@
 const adminUserModel = require('./adminUser')
-// const clinetUserAdmin = require('./clinetUserAdmin')
+const clinetUserAdmin = require('./clinetUserAdmin')
 
 module.exports = {
   ...adminUserModel,
-  // ...clinetUserAdmin
+  ...clinetUserAdmin
 }

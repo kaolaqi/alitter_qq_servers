@@ -1,4 +1,4 @@
-const cllientFriendAdmin = require('../tables/client_user_firend')
+const clientFriendAdmin = require('../tables/client_user_firend')
 const clientUserAdmin = require('../tables/client_user')
 const clientUserMessage = require('../tables/client_user_message')
 const Sequelize = require('sequelize')
@@ -9,7 +9,7 @@ const client_addUserFriend = ({
   userId,
   friendUserId
 }) => {
-  return cllientFriendAdmin.count({
+  return clientFriendAdmin.count({
     where: {
       [Op.and]: [{
         userId
@@ -25,7 +25,7 @@ const client_addUserFriend = ({
         result: null
       }
     } else {
-      return cllientFriendAdmin.bulkCreate([{
+      return clientFriendAdmin.bulkCreate([{
         userId,
         friendUserId
       }, {
@@ -56,7 +56,7 @@ const client_addUserFriend = ({
   })
 }
 
-// 查询好友列表，穿chated = 1 可只查询在聊天的好友
+// 查询好友列表，传chated = 1 可只查询在聊天的好友
 const client_getUserFriend = ({
   userId,
   chated
@@ -67,28 +67,18 @@ const client_getUserFriend = ({
   if (chated) {
     query.chated = chated
   }
-  return cllientFriendAdmin.findAll({
-    attributes: ['userId', 'friendUserId', 'chated'],
+  return clientFriendAdmin.findAll({
     where: query,
-    // include: [{
-    //   attributes: ['userId', 'mobile', 'nickname', 'avatar'],
-    //   model: clientUserAdmin,
-    //   as: 'userInfo'
-    // }, {
-    //   attributes: ['contentText', 'createdAt'],
-    //   model: clientUserMessage,
-    //   as: 'lastMessage'
-    // }]
-
+    attributes: ['friendUserId', 'chated'],
     include: [{
-      attributes: ['userId', 'mobile', 'nickname', 'avatar', 'sign'],
+      attributes: ['mobile', 'nickname', 'email', 'avatar', 'sign'],
       model: clientUserAdmin,
       as: 'userInfo',
-      include: [{
-        attributes: ['contentText', 'createdAt'],
-        model: clientUserMessage,
-        as: 'lastMessage'
-      }]
+      // include: [{
+      //   attributes: ['contentText', 'createdAt'],
+      //   model: clientUserMessage,
+      //   as: 'lastMessage'
+      // }]
     }]
   }).then(data => {
     if (!data) {
@@ -113,12 +103,12 @@ const client_getUserFriend = ({
   })
 }
 
-// 查询好友列表，穿chated = 1 可只查询在聊天的好友
+// 查询两个用户是不是好友
 const client_chickIsFriend = ({
   userId,
   friendUserId
 }) => {
-  return cllientFriendAdmin.count({
+  return clientFriendAdmin.count({
     where: {
       userId,
       friendUserId
@@ -138,13 +128,13 @@ const client_chickIsFriend = ({
   })
 }
 
-// 查询好友列表，穿chated = 1 可只查询在聊天的好友
+// 设置两个好友的聊天状态 status 未聊天：0 | 聊天中： 1
 const client_setInchatStatus = ({
   userId,
   friendUserId,
   status
 }) => {
-  return cllientFriendAdmin.update({
+  return clientFriendAdmin.update({
     chated: status
   }, {
     where: {

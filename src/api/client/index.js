@@ -10,10 +10,10 @@ router.post('/register', useOptioneModel.userRegister)
 router.post('/login', useOptioneModel.userLogin)
 router.get('/userInfo', auth, useOptioneModel.userInfo)
 router.get('/logout', auth, useOptioneModel.userLogout)
-router.get('/searchUserList', auth, useOptioneModel.searchUserList)
+router.get('/userList', auth, useOptioneModel.searchUserList)
 
 router.post('/addFriend', auth, useFriendModel.addUserFriend)
-router.get('/getUserFriendList', auth, useFriendModel.getUserFriendList)
+router.get('/getFriendList', auth, useFriendModel.getUserFriendList)
 router.get('/chickIsFriend', auth, useFriendModel.chickIsFriend)
 router.put('/setInchatStatus', auth, useFriendModel.setInchatStatus)
 

@@ -9,14 +9,13 @@ const adminRole = sequelize.define('admin_role', {
   roleType: {
     type: Sequelize.STRING,
     allowNull: false,
-    primaryKey: true,
-    comment: '后台账号角色类型'
+    comment: '后台账号角色类型',
+    unique: true
   },
   roleName: {
     type: Sequelize.STRING,
     allowNull: false,
-    comment: '后台账号角色名称',
-    unique: true
+    comment: '后台账号角色名称'
   }
 }, {
   paranoid: true, // 启用软删除
@@ -29,10 +28,13 @@ adminRole.sync({
   adminRole.findOne().then(res => {
     if (!res) {
       console.log('即将创建admin_role表') //初始化数据库，自动创建一个超级管理员的角色
-      return adminRole.create({
+      return adminRole.bulkCreate([{
         roleType: 'superAdmin',
         roleName: '超级管理员'
-      })
+      }, {
+        roleType: 'normalAadmin',
+        roleName: '管理员'
+      }])
     } else {
       console.log('admin_role表已经存在....')
     }

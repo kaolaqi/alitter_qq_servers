@@ -1,21 +1,21 @@
 const utility = require('utility')
-const clientUserAdmin = require('../tables/client_user')
+const clientUser = require('../tables/client_user')
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 
 // 客户端注册
 const client_register = ({
-  nickname,
+  nickname = null,
   password,
   mobile,
-  status = 1
+  email
 }) => {
   password = utility.sha256(password)
-  return clientUserAdmin.create({
+  return clientUser.create({
     nickname,
     password,
     mobile,
-    status
+    email
   }).then(data => {
     if (!data) {
       return {
@@ -43,7 +43,7 @@ const client_login = ({
   mobile,
   password
 }) => {
-  return clientUserAdmin.findOne({
+  return clientUser.findOne({
     where: {
       mobile: mobile
     }
@@ -59,6 +59,8 @@ const client_login = ({
             mobile: data.mobile,
             nickname: data.nickname,
             avatar: data.avatar,
+            email: data.email,
+            sign: data.sign,
             status: data.status
           }
         }
@@ -88,8 +90,8 @@ const client_login = ({
 const client_info = ({
   mobile
 }) => {
-  return clientUserAdmin.findOne({
-    attributes: ['userId', 'mobile', 'nickname', 'avatar', 'status'],
+  return clientUser.findOne({
+    attributes: ['userId', 'mobile', 'nickname', 'email', 'avatar', 'sign', 'status'],
     where: {
       mobile: mobile
     }
@@ -120,20 +122,20 @@ const client_info = ({
 const client_searchUserList = ({
   page = 1,
   pageSize = 30,
-  searchText,
-  selfMobile
+  text = '', // 模糊查询  包含：%${text}% 已**开头：${text}%
+  selfMobile // 查询排除 mobile = selfMobile 的项,排除自己
 }) => {
-  let query = {}
+  var query = {}
   if (selfMobile) {
     query = {
       [Op.or]: [{
         nickname: {
-          [Op.like]: `%${searchText}%`
+          [Op.like]: `%${text}%`
         }
       }, {
         mobile: {
-          [Op.like]: `%${searchText}%`,
-          [Op.ne]: selfMobile
+          [Op.like]: `${text}%`,
+          [Op.ne]: selfMobile // 不包含指定的mobile
         }
       }]
     }
@@ -141,19 +143,19 @@ const client_searchUserList = ({
     query = {
       [Op.or]: [{
         nickname: {
-          [Op.like]: `%${searchText}%`
+          [Op.like]: `%${text}%`
         }
       }, {
         mobile: {
-          [Op.like]: `%${searchText}%`
+          [Op.like]: `${text}%`
         }
       }]
     }
   }
-  return clientUserAdmin.findAndCountAll({
+  return clientUser.findAndCountAll({
     offset: (page - 1) * pageSize,
     limit: +pageSize,
-    attributes: ['userId', 'mobile', 'nickname', 'avatar', 'status'],
+    attributes: ['userId', 'mobile', 'nickname', 'email', 'sign', 'avatar', 'status'],
     where: query
   }).then(data => {
     if (data) {

@@ -60,6 +60,7 @@ const admin_login = ({
           statusCode: 200,
           message: (userInfo.nickname || userInfo.phone) + '登录成功！',
           data: {
+            userId: userInfo.userId,
             avatar: userInfo.avatar,
             email: userInfo.email,
             status: userInfo.status,
@@ -99,6 +100,7 @@ const admin_info = ({
     where: {
       phone
     },
+    attributes: ['userId', 'phone', 'nickname', 'email', 'avatar', 'status', 'createdAt'],
     include: [{
       attributes: ['roleType', 'roleName'],
       model: adminRole,
@@ -109,14 +111,7 @@ const admin_info = ({
       return {
         statusCode: 200,
         message: 'success',
-        data: {
-          avatar: userInfo.avatar,
-          email: userInfo.email,
-          status: userInfo.status,
-          phone: userInfo.phone,
-          nickname: userInfo.nickname,
-          roleInfo: userInfo.roleInfo
-        }
+        data: userInfo
       }
     } else {
       return {
@@ -150,7 +145,7 @@ const admin_toogleUserStatus = ({
       return {
         statusCode: 200,
         message: 'success',
-        data: data
+        data: null
       }
     }
   }).catch(e => {
@@ -166,13 +161,13 @@ const admin_toogleUserStatus = ({
 const admin_userList = ({
   page = 1,
   pageSize = 10,
-  username = '',
+  phone = '',
   status = '',
   role = ''
 }) => {
   var query = {}
-  if (username) {
-    query.username = username
+  if (phone) {
+    query.phone = phone
   }
   if (status) {
     query.status = status
@@ -183,7 +178,12 @@ const admin_userList = ({
   return adminUser.findAndCountAll({
     offset: (page - 1) * pageSize,
     limit: +pageSize,
-    attributes: ['id', 'username', 'email', 'avatar', 'status', 'role', 'createdAt'],
+    attributes: ['userId', 'phone', 'nickname', 'email', 'avatar', 'status', 'createdAt'],
+    include: [{
+      attributes: ['roleType', 'roleName'],
+      model: adminRole,
+      as: 'roleInfo'
+    }],
     where: query
   }).then(data => {
     if (data) {

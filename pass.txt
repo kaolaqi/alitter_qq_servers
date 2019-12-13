@@ -1,0 +1,86 @@
+ A temporary password is generated for root@localhost: DeGMx;iri2rG
+新密码： 159357
+
+安装：以管理员运行命令提示符，cd到安装文件目录的bin文件下，
+初始化数据库：mysqld --initialize --console  --  得到初始化用户root账号和密码
+安装命令： mysqld install
+
+启动服务：net start mysql
+关闭服务：mysqladmin -uroot shutdown -p   执行后输入密码
+
+登录：（mysql -h 主机名 -u 用户名 -p） mysql -u root -p  以root用户登录本机mysql服务
+退出登录： quit 或 exit
+
+修改密码命令：
+ALTER USER 'root'@'localhost' IDENTIFIED BY '新密码';
+
+
+数据库操作：
+1.查看数据库管理系统的数据库列表：SHOW DATABASES;
+2.创建数据库：create DATABASE 数据库名称;
+   使用root最高权限创建数据库：mysqladmin -u root -p create 数据库名称;   然后输入root密码
+3. 删除数据库：drop database <数据库名>;
+   使用root最高权限删除数据库：mysqladmin -u root -p drop 数据库名;   然后输入root密码
+4.切换选择使用的数据库：use 数据库名称;
+5.显示当前使用数据库的所有数据表:  SHOW TABLES;
+6.显示指定数据表的属性，属性类型，主键信息： SHOW COLUMNS FROM 数据表名;
+
+7.创建当前选择数据库中的数据表：CREATE TABLE 数据表名 (column_name column_type);
+   CREATE TABLE IF NOT EXISTS `runoob_tbl`(
+     `runoob_id` INT UNSIGNED AUTO_INCREMENT,
+     `runoob_title` VARCHAR(100) NOT NULL,
+     `runoob_author` VARCHAR(40) NOT NULL,
+     `submission_date` DATE,
+     PRIMARY KEY ( `runoob_id` )
+   )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+8.创建当前选择数据库中的数据表：DROP TABLE 数据表名;
+9.插入数据：
+   INSERT INTO 数据表名 ( field1, field2,...fieldN )
+                       VALUES
+                       ( value1, value2,...valueN );
+   el:  INSERT INTO runoob_tbl
+        (runoob_title, runoob_author, submission_date)
+        VALUES
+        ("学习 PHP","菜鸟教程",NOW()); //vakue值不能带空格
+10.读取数据表： select * from 数据表名;
+11.查询数据表：
+    SELECT column_name,column_name // 查询字段名，全部用*代替
+    FROM table_name,table_name          // 查询表名
+    [WHERE Clause]	          //查询条件 可选
+    [LIMIT N][ OFFSET M]   //限制条数 |  偏移数 可选
+注： MySQL 的 WHERE 子句的字符串比较是不区分大小写的。 你可以使用 BINARY 关键字来设定 WHERE 子句的字符串比较是区分大小写的。
+
+查询规则：
+a. 需要获取 runoob_author 字段含有 "COM" 字符的所有记录，这时我们就需要在 WHERE 子句中使用 SQL LIKE 子句。
+    select* from 数据表名  where key LIKE '%COM';
+b.UNION 操作符用于连接两个以上的 SELECT 语句的结果组合到一个结果集合中。多个 SELECT 语句会删除重复的数据。
+   SELECT country FROM Websites
+   UNION
+   SELECT country FROM apps
+   ORDER BY country;
+
+12.更新修改数据：
+   UPDATE 数据表名 SET 字段值key=修改后的值 WHERE runoob_id=3;
+13.删除数据：
+   DELETE FROM 数据表名 WHERE runoob_id=3;
+
+
+
+node使用Sequelize链接mysql数据库，提示
+Client does not support authentication protocol requested by server; consider upgrading MySQL client
+错误时，cmd命令登录到数据区，执行一下命令即可：
+命令如下：
+1、alter user 'root'@'localhost' identified with mysql_native_password by '********';
+2、flush privileges;
+
+
+
+服务器上安装的mysql常用操作命令：
+
+mysql -u root -p   #登录数据库
+
+systemctl start mysqld    #启动mysqld
+systemctl stop mysqld    #停止mysqld
+systemctl restart mysqld    #重启mysqld
+systemctl enable mysqld   #设置开机启动
+systemctl status mysqld    #查看 MySQL Server 状态
