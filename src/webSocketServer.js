@@ -1,5 +1,6 @@
 const WebSocket = require('ws')
 const config = require('./config/index')
+
 const ws = new WebSocket.Server({
   port: config.webSocketPort,
   host: config.webSocketHost

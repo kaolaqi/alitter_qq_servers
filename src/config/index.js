@@ -7,11 +7,12 @@ tokenSecret => jsonwebtoken登录认证中间件随机码
 module.exports = {
   // 家
   // webSocketHost: '192.168.1.9',
-  // webSocketPort: 8050
+  webSocketHost: '192.168.1.6',
+  webSocketPort: 8050,
 
   // 公司
-  webSocketHost: '172.18.13.25',
-  webSocketPort: 8050,
+  // webSocketHost: '172.18.13.25',
+  // webSocketPort: 8050,
 
   // 阿里云服务器
   // webSocketHost: '47.98.128.245',
