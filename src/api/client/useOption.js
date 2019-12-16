@@ -25,7 +25,7 @@ module.exports = {
       if (result.statusCode === 200) {
         jsonwebtoken.sign(result, tokenSecret, {
           expiresIn: '7d'
-        }, (err, jsonwebtoken) => {
+        }, (_err, jsonwebtoken) => {
           res.cookie('guruaduserauth', jsonwebtoken, {
             maxAge: 604800000,
             httpOnly: true
@@ -57,7 +57,7 @@ module.exports = {
     })
   },
   // 退出登录
-  userLogout(req, res) {
+  userLogout(_req, res) {
     res.cookie('guruaduserauth', null, {
       maxAge: 10,
       httpOnly: true

@@ -15,9 +15,9 @@ var sequelize = new Sequelize(sqlConfig.database, sqlConfig.user, sqlConfig.pass
     typeCast: true
   },
   define: {
-    underscored: true,     // 转换列名的驼峰命名规则为下划线命令规则
-    underscoredAll: true,  //	转换模型名的驼峰命名规则为表名的下划线命令规则
-    charset:'utf8mb4'      // 定义数据库的字符集
+    underscored: true, // 转换列名的驼峰命名规则为下划线命令规则
+    underscoredAll: true, //	转换模型名的驼峰命名规则为表名的下划线命令规则
+    charset: 'utf8mb4' // 定义数据库的字符集
   },
   pool: {
     max: 10,
@@ -27,4 +27,5 @@ var sequelize = new Sequelize(sqlConfig.database, sqlConfig.user, sqlConfig.pass
   freezeTableName: true, // Model 对应的表名将与model名相同
   timezone: '+08:00' // 改为标准时区
 })
+
 module.exports = sequelize

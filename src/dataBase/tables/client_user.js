@@ -2,7 +2,6 @@ const utility = require('utility')
 const Sequelize = require('sequelize')
 const sequelize = require('../init')
 
-
 // 初始化数据库的user表
 const clientUser = sequelize.define('client_user', {
   userId: {
@@ -49,15 +48,13 @@ const clientUser = sequelize.define('client_user', {
   paranoid: true, // 启用软删除
 })
 
-
-
 clientUser.sync({
   force: false
 }).then(() => {
   // 现在数据库中的 `client_user` 表对应于模型定义
   clientUser.findOne().then(res => {
     if (!res) {
-      console.log('即将创建client_user表') //初始化数据库是自动创建一个系统用户: systemServer | 111111
+      console.log('即将创建client_user表') // 初始化数据库是自动创建一个系统用户: systemServer | 111111
       return clientUser.create({
         mobile: 'systemServer',
         nickname: '系统客服',

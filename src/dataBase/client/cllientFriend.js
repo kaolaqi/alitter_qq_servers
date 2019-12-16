@@ -73,12 +73,7 @@ const client_getUserFriend = ({
     include: [{
       attributes: ['mobile', 'nickname', 'email', 'avatar', 'sign'],
       model: clientUserAdmin,
-      as: 'userInfo',
-      // include: [{
-      //   attributes: ['contentText', 'createdAt'],
-      //   model: clientUserMessage,
-      //   as: 'lastMessage'
-      // }]
+      as: 'userInfo'
     }]
   }).then(data => {
     if (!data) {
@@ -138,8 +133,13 @@ const client_setInchatStatus = ({
     chated: status
   }, {
     where: {
-      userId,
-      friendUserId
+      [Op.or]: [{
+        userId,
+        friendUserId
+      }, {
+        userId: friendUserId,
+        friendUserId: userId
+      }]
     }
   }).then(data => {
     return {

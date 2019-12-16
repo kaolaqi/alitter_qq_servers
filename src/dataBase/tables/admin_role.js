@@ -3,7 +3,6 @@ const sequelize = require('../init')
 
 // const AdminUser = require('./admin_user.js')
 
-
 // 初始化数据库的user表
 const adminRole = sequelize.define('admin_role', {
   roleType: {
@@ -27,7 +26,7 @@ adminRole.sync({
   // 现在数据库中的 `admin_role` 表对应于模型定义
   adminRole.findOne().then(res => {
     if (!res) {
-      console.log('即将创建admin_role表') //初始化数据库，自动创建一个超级管理员的角色
+      console.log('即将创建admin_role表') // 初始化数据库，自动创建一个超级管理员的角色
       return adminRole.bulkCreate([{
         roleType: 'superAdmin',
         roleName: '超级管理员'

@@ -1,11 +1,15 @@
-// const cllientFriendAdmin = require('../tables/client_user_firend')
-const clientUserMessage = require("../tables/client_user_message");
-const Sequelize = require("sequelize");
-const Op = Sequelize.Op;
-const clientList = require("../../webSocketServer");
+/* eslint-disable indent */
+const clientUserMessage = require('../tables/client_user_message')
+const Sequelize = require('sequelize')
+const Op = Sequelize.Op
+const clientList = require('../../webSocketServer')
 
 // 给好友发送消息
-const client_sendFriendMessage = ({ userId, friendUserId, contentText }) => {
+const client_sendFriendMessage = ({
+  userId,
+  friendUserId,
+  contentText
+}) => {
   return clientUserMessage
     .create({
       userId,
@@ -13,16 +17,13 @@ const client_sendFriendMessage = ({ userId, friendUserId, contentText }) => {
       contentText
     })
     .then(data => {
-      console.log("====已发送消息给好友====");
-      for (var key in clientList) {
-        clientList[key].send(JSON.stringify(data));
-      }
-      if (clientList["id" + friendUserId]) {
-        clientList["id" + friendUserId].send(JSON.stringify(data));
+      console.log('====已发送消息给好友====')
+      if (clientList['id' + friendUserId]) {
+        clientList['id' + friendUserId].send(JSON.stringify(data))
       }
       return {
         statusCode: 200,
-        message: "request success",
+        message: 'request success',
         result: data
       };
     })
@@ -30,7 +31,7 @@ const client_sendFriendMessage = ({ userId, friendUserId, contentText }) => {
       return {
         statusCode: 500,
         result: null,
-        message: e || "数据库操作错误"
+        message: e || '数据库操作错误'
       };
     });
 };
@@ -43,26 +44,19 @@ const client_queryFriendMessage = ({
   friendUserId
 }) => {
   var query = {
-    [Op.or]: [
-      {
-        [Op.and]: [
-          {
-            userId
-          },
-          {
-            friendUserId
-          }
-        ]
+    [Op.or]: [{
+        [Op.and]: [{
+          userId
+        }, {
+          friendUserId
+        }]
       },
       {
-        [Op.and]: [
-          {
-            userId: friendUserId
-          },
-          {
-            friendUserId: userId
-          }
-        ]
+        [Op.and]: [{
+          userId: friendUserId
+        }, {
+          friendUserId: userId
+        }]
       }
     ]
   };
@@ -70,12 +64,15 @@ const client_queryFriendMessage = ({
     .findAndCountAll({
       offset: (page - 1) * pageSize,
       limit: +pageSize,
+      order: [
+        ['createdAt', 'DESC']
+      ],
       where: query
     })
     .then(data => {
       return {
         statusCode: 200,
-        message: "request success",
+        message: 'request success',
         result: data
       };
     })
@@ -83,7 +80,7 @@ const client_queryFriendMessage = ({
       return {
         statusCode: 500,
         result: null,
-        message: e || "数据库操作错误"
+        message: e || '数据库操作错误'
       };
     });
 };

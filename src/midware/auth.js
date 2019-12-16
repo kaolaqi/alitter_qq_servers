@@ -20,8 +20,6 @@ module.exports = (req, res, next) => {
   })
 }
 
-
-
 // const jsonwebtoken = require('jsonwebtoken')
 // const {
 //   tokenAdminSecret,

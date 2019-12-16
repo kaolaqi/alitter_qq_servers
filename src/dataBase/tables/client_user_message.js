@@ -36,8 +36,7 @@ const userMessageAdmin = sequelize.define('client_user_message', {
 
 userMessageAdmin.sync({
   force: false
-}).then(() => {
-}).catch(err => {
+}).then(() => {}).catch(err => {
   throw Error('创建表client_user_message失败....' + err)
 })
 

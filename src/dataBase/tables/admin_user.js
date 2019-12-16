@@ -65,7 +65,7 @@ adminUser.sync({
   // 现在数据库中的 `backstage_user` 表对应于模型定义
   adminUser.findOne().then(res => {
     if (!res) {
-      console.log('即将创建backstage_user表') //初始化数据库是自动创建一个超管账号: admin | 111111
+      console.log('即将创建backstage_user表') // 初始化数据库是自动创建一个超管账号: admin | 111111
       return adminUser.create({
         phone: 'admin',
         nickname: '超级管理员',
