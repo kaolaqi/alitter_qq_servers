@@ -13,8 +13,7 @@ module.exports = {
   // webSocketHost: '172.18.13.25',
   // webSocketPort: 8050,
 
-  // 阿里云服务器
-  //  webSocketHost: '47.98.128.245',
+  // websocket 只能使用本的服务
   webSocketHost: 'localhost',
   webSocketPort: 8050,
 
