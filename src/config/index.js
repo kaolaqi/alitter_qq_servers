@@ -14,7 +14,8 @@ module.exports = {
   // webSocketPort: 8050,
 
   // 阿里云服务器
-  webSocketHost: '47.98.128.245',
+  //  webSocketHost: '47.98.128.245',
+  webSocketHost: 'localhost',
   webSocketPort: 8050,
 
   tokenSecret: 'asdasdfDfaecasdfqeqevdaASaas'
