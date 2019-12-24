@@ -1,5 +1,5 @@
 const utility = require('utility')
-// const axios = require('axios')
+const axios = require('axios')
 const clientUser = require('../tables/client_user')
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
@@ -26,23 +26,23 @@ const client_register = ({
       }
     } else {
       // 发送邮箱推送
-      // axios.get('http://www.nglmq.com/wxsdk/smtp', {
-      //   params: {
-      //     toEmail: email,
-      //     subject: '应用注册通知 —— From AlittleQQ',
-      //     html: `<h3 style="line-height: 46px;font-size: 20px;">尊敬的${nickname}，你好！</h3>
-      //     <p style="line-height: 28px">恭喜您已注册成功，成为alittleQQ的一员，快去<a href="http://www.nglmq.com:8040">登录</a>使用吧！</p>
-      //     <p style="text-align: right;margin-top: 15px;padding-right: 15px;">感谢你的支持</p>
-      //     <p style="text-align: right;padding-right: 10px;">alittleQQ server</p>
-      //     `
-      //   }
-      // }).then(result => {
-      //   if (result.data.returnCode === 200) {
-      //     console.log('邮箱推送成功！')
-      //   } else {
-      //     console.log('邮箱推送服务失败！')
-      //   }
-      // })
+      axios.get('http://www.nglmq.com/wxsdk/smtp', {
+        params: {
+          toEmail: email,
+          subject: '应用注册通知 —— From AlittleQQ',
+          html: `<h3 style="line-height: 46px;font-size: 20px;">尊敬的${nickname}，你好！</h3>
+          <p style="line-height: 28px">恭喜您已注册成功，成为alittleQQ的一员，快去<a href="http://www.nglmq.com:8040">登录</a>使用吧！</p>
+          <p style="text-align: right;margin-top: 15px;padding-right: 15px;">感谢你的支持</p>
+          <p style="text-align: right;padding-right: 10px;">alittleQQ server</p>
+          `
+        }
+      }).then(result => {
+        if (result.data.returnCode === 200) {
+          console.log('邮箱推送成功！')
+        } else {
+          console.log('邮箱推送服务失败！')
+        }
+      })
       return {
         statusCode: 200,
         message: 'request success',
