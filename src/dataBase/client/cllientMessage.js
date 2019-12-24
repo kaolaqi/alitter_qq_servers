@@ -19,16 +19,10 @@ const client_sendFriendMessage = ({
       contentText,
       friendUserEmail
     })
-    .then(result => {
+    .then(data => {
       console.log('====已发送消息给好友====')
       if (clientList['id' + friendUserId]) {
-        console.log('好友打开对应的聊天,立即将推送给好友')
-        clientList['id' + friendUserId].send(JSON.stringify(result))
-        return {
-          statusCode: 200,
-          message: 'request success',
-          result: result
-        };
+        clientList['id' + friendUserId].send(JSON.stringify(data))
       } else {
         console.log('好友没有打开对应的聊天,邮件通知')
         if (friendUserEmail) {
@@ -37,7 +31,7 @@ const client_sendFriendMessage = ({
               toEmail: friendUserEmail,
               subject: '好友消息通知 —— From AlittleQQ',
               html: `<h3 style="line-height: 46px;font-size: 20px;">尊敬的alittleQQ用户，你好！</h3>
-              <p style="line-height: 28px">你有好友在alittleQQ上给你发送了最新消息，请<a href="http://www.nglmq.com:8040">立即登录</a>查看。</p>
+              <p style="line-height: 28px">你有好友在alitleQQ上给你发送了最新消息，请<a href="http://www.nglmq.com:8040">立即登录</a>查看。</p>
               <p style="text-align: right;margin-top: 15px;padding-right: 15px;">感谢你的支持</p>
               <p style="text-align: right;padding-right: 10px;">alittleQQ server</p>
               `
@@ -48,20 +42,14 @@ const client_sendFriendMessage = ({
             } else {
               console.log('邮箱推送服务失败！')
             }
-            return {
-              statusCode: 200,
-              message: 'request success',
-              result: result
-            };
           })
-        } else {
-          return {
-            statusCode: 200,
-            message: 'request success',
-            result: result
-          };
         }
       }
+      return {
+        statusCode: 200,
+        message: 'request success',
+        result: data
+      };
     })
     .catch(e => {
       return {
