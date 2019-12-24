@@ -33,6 +33,7 @@ const clientUser = sequelize.define('client_user', {
   },
   avatar: {
     type: Sequelize.STRING,
+    defaultValue: 'http://47.98.128.245:8090/static/images/default_avatar.png',
     comment: '用户图像URL地址'
   },
   sign: {

@@ -5,14 +5,16 @@ const fs = require('fs')
 const upload = multer({
   dest: './static/upload' // 上传文件存放路径
 });
-const fileMidle = upload.single('file') // file中间件
+// 上传文件file的中间件
+const fileMidle = upload.single('file')
 
+// 上传文件处理操作
 const updataCallback = (req, res) => {
   const fileType = path.parse(req.file.originalname)
   const filePath = req.file.path
   // 不符合邀请的文件直接删除
   if (fileType !== 'png' && fileType !== 'jpg') {
-    // 如果不是邀请的文件类型和文件大小，执行删除
+    // 如果不是要求的文件类型和文件大小，执行删除
     fs.unlink(filePath, (err) => {
       if (err) {
         throw err

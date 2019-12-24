@@ -20,7 +20,6 @@ app.use(
 app.use(bodyParser.json());
 app.use(cookieParser());
 // 静态文件服务
-// app.use('./src/static', express.static(path.join(__dirname, 'static')))
 app.use('/static', express.static('./static'));
 
 // 路由配置
